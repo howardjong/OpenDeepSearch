@@ -146,13 +146,21 @@ class OpenDeepSearchAgent:
             {"role": "system", "content": self.system_prompt},
             {"role": "user", "content": f"Context:\n{context}\n\nQuestion: {query}"}
         ]
-        # Get completion from LLM
-        response = completion(
-            model=self.model,
-            messages=messages,
-            temperature=self.temperature,
-            top_p=self.top_p
-        )
+        # Get completion from LLM (using router if available)
+        try:
+            response = completion(
+                model=self.model,
+                messages=messages,
+                temperature=self.temperature,
+                top_p=self.top_p
+            )
+        except Exception as e:
+            # Log the error
+            print(f"Error with primary model: {str(e)}")
+            if 'rate limit' in str(e).lower() or 'ratelimit' in str(e).lower():
+                print("Hit rate limit, router should handle fallback automatically")
+            # Let the error propagate for router fallback handling
+            raise
 
         return response.choices[0].message.content
 

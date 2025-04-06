@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import argparse
 import gradio as gr
 import sys
+import litellm
+from litellm import Router
 
 # Load environment variables
 load_dotenv()
@@ -77,7 +79,44 @@ try:
         searxng_api_key=args.searxng_api_key
     )
 
-    # Create the model
+    # Create router for load balancing and fallbacks
+    router = Router(
+        model_list=[
+            {
+                "model_name": args.orchestrator_model,
+                "litellm_params": {
+                    "model": args.orchestrator_model,
+                    "temperature": 0.2,
+                },
+                "tpm": 250000,  # Adjust based on your API tier
+                "rpm": 50       # Adjust based on your API tier
+            },
+            # Fallback model (Anthropic) in case primary model hits rate limits
+            {
+                "model_name": "anthropic/claude-3-opus-20240229",
+                "litellm_params": {
+                    "model": "anthropic/claude-3-opus-20240229",
+                    "temperature": 0.2,
+                },
+                "tpm": 100000,  # Adjust based on your API tier
+                "rpm": 20       # Adjust based on your API tier  
+            }
+        ],
+        routing_strategy="simple-shuffle",  # Options: "simple-shuffle", "usage-based", "latency-based"
+        num_retries=3,
+        retry_after_timeout=5,
+        fallbacks=[
+            {
+                "original_model": args.orchestrator_model,
+                "fallback_model": "anthropic/claude-3-opus-20240229"
+            }
+        ]
+    )
+    
+    # Set router as global default
+    litellm.router = router
+    
+    # Create the model using the managed router
     model = LiteLLMModel(
         model_id=args.orchestrator_model,
         temperature=0.2,
