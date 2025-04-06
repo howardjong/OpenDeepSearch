@@ -64,4 +64,5 @@ model = LiteLLMModel(
 agent = CodeAgent(tools=[search_tool], model=model)
 
 # Add a name when initializing GradioUI
-GradioUI(agent).launch(server_name="127.0.0.1", server_port=args.server_port, share=False)
+# Using 0.0.0.0 to make it accessible in Replit environment
+GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
