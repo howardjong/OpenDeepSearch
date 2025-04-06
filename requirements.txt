@@ -11,3 +11,4 @@ smolagents>=1.9.2
 gradio==5.20.1
 
 python-dotenv
+litellm==1.57.5
