@@ -83,32 +83,29 @@ try:
     router = Router(
         model_list=[
             {
-                "model_name": args.orchestrator_model,
+                "model_name": "openrouter/google/gemini-2.5-pro-exp-03-25:free",
                 "litellm_params": {
-                    "model": args.orchestrator_model,
+                    "model": "openrouter/google/gemini-2.5-pro-exp-03-25:free",
                     "temperature": 0.2,
                 },
-                "tpm": 250000,  # Adjust based on your API tier
-                "rpm": 50       # Adjust based on your API tier
+                "tpm": 100000,  # Adjust based on OpenRouter free tier limits
+                "rpm": 20       # Adjust based on OpenRouter free tier limits
             },
-            # Fallback model (Anthropic) in case primary model hits rate limits
+            # Fallback model in case primary model hits rate limits
             {
-                "model_name": "anthropic/claude-3-opus-20240229",
+                "model_name": "openrouter/google/gemini-2.0-flash-001",
                 "litellm_params": {
-                    "model": "anthropic/claude-3-opus-20240229",
+                    "model": "openrouter/google/gemini-2.0-flash-001",
                     "temperature": 0.2,
                 },
-                "tpm": 100000,  # Adjust based on your API tier
-                "rpm": 20       # Adjust based on your API tier  
+                "tpm": 100000,  # Adjust based on OpenRouter limits
+                "rpm": 20       # Adjust based on OpenRouter limits
             }
         ],
         routing_strategy="simple-shuffle",  # Options: "simple-shuffle", "usage-based", "latency-based"
         num_retries=3,
         fallbacks=[
-            {
-                "original_model": args.orchestrator_model,
-                "fallback_model": "anthropic/claude-3-opus-20240229"
-            }
+            {"openrouter/google/gemini-2.5-pro-exp-03-25:free": "openrouter/google/gemini-2.0-flash-001"}
         ]
     )
     
