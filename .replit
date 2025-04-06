@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run with Gemini Flash"
+runButton = "Run with Claude 3.7 Sonnet (Latest)"
 
 [[workflows.workflow]]
 name = "Run Demo"
@@ -44,6 +44,19 @@ args = "pip install litellm==1.57.5"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python gradio_demo.py --reranker jina --model-name \"openrouter/google/gemini-2.0-flash-001\" --orchestrator-model \"openrouter/google/gemini-2.0-flash-001\""
+
+[[workflows.workflow]]
+name = "Run with Claude 3.7 Sonnet (Latest)"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install litellm==1.57.5"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py --reranker jina --model-name \"anthropic/claude-3-7-sonnet-20250219\" --orchestrator-model \"anthropic/claude-3-7-sonnet-20250219\""
 
 [[ports]]
 localPort = 7860
