@@ -17,4 +17,4 @@ mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python gradio_demo.py --search-provider searxng --searxng-instance https://searx.be --reranker jina"
+args = "python gradio_demo.py --reranker jina"

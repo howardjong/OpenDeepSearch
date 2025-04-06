@@ -7,6 +7,21 @@ import argparse
 # Load environment variables
 load_dotenv()
 
+# Ensure API keys are available from Replit Secrets
+api_keys = {
+    "JINA_API_KEY": os.environ.get("JINA_API_KEY"),
+    "SERPER_API_KEY": os.environ.get("SERPER_API_KEY"),
+    "OPENROUTER_API_KEY": os.environ.get("OPENROUTER_API_KEY"),
+    "OPENAI_API_KEY": os.environ.get("OPENAI_API_KEY"),
+    "ANTHROPIC_API_KEY": os.environ.get("ANTHROPIC_API_KEY"),
+    "FIREWORKS_API_KEY": os.environ.get("FIREWORKS_API_KEY")
+}
+
+# Log which API keys are available (without exposing the values)
+print("API keys detected in environment:")
+for key, value in api_keys.items():
+    print(f"  - {key}: {'✓ Available' if value else '✗ Missing'}")
+
 # Add command line argument parsing
 parser = argparse.ArgumentParser(description='Run the Gradio demo with custom models')
 parser.add_argument('--model-name',
