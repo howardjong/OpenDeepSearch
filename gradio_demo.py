@@ -1,3 +1,4 @@
+
 from smolagents import CodeAgent, LiteLLMModel
 from opendeepsearch import OpenDeepSearchTool
 import os
@@ -30,10 +31,10 @@ for key, value in api_keys.items():
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run the Gradio demo with custom models')
 parser.add_argument('--model-name',
-                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openai/gpt-3.5-turbo")),
+                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.0-flash-001")),
                    help='Model name for search')
 parser.add_argument('--orchestrator-model',
-                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openai/gpt-3.5-turbo")),
+                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.0-flash-001")),
                    help='Model name for orchestration')
 parser.add_argument('--reranker',
                    choices=['jina', 'infinity'],
@@ -76,44 +77,44 @@ try:
         searxng_instance_url=args.searxng_instance,
         searxng_api_key=args.searxng_api_key
     )
-
+    
     # Create the model
     model = LiteLLMModel(
         model_id=args.orchestrator_model,
         temperature=0.2,
     )
-
+    
     # Initialize the agent with the search tool
     agent = CodeAgent(tools=[search_tool], model=model)
-
+    
     # Define a simple Gradio interface directly without using GradioUI from smolagents
     def process_query(query):
         try:
             return agent.run(query)
         except Exception as e:
             return f"Error processing query: {str(e)}"
-
+    
     # Create a basic Gradio interface
     with gr.Blocks(title="OpenDeepSearch Demo") as demo:
         gr.Markdown("# 🔍 OpenDeepSearch Demo")
         gr.Markdown("Ask any question and get answers powered by AI search")
-
+        
         with gr.Row():
             query_input = gr.Textbox(
                 label="Your Question",
                 placeholder="What is the fastest land animal?",
                 lines=2
             )
-
+        
         submit_btn = gr.Button("Search")
-
+        
         output = gr.Textbox(
             label="Answer",
             lines=10
         )
-
+        
         submit_btn.click(fn=process_query, inputs=query_input, outputs=output)
-
+    
     # Launch the Gradio app
     demo.launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
 
