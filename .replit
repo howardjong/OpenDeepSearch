@@ -6,3 +6,15 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "python gradio_demo.py"]
+
+[workflows]
+runButton = "Run Demo"
+
+[[workflows.workflow]]
+name = "Run Demo"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py"
