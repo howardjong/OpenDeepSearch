@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run Simple Demo"
+runButton = "Run with Gemini Pro"
 
 [[workflows.workflow]]
 name = "Run Demo"
@@ -27,6 +27,15 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python gradio_demo.py --reranker jina"
+
+[[workflows.workflow]]
+name = "Run with Gemini Pro"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py --reranker jina --model-name \"openrouter/google/gemini-2.5-pro-exp-03-25\" --orchestrator-model \"openrouter/google/gemini-2.5-pro-exp-03-25\""
 
 [[ports]]
 localPort = 7860
