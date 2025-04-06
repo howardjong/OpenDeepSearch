@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run Demo (Stable)"
+runButton = "Run with Gemini Flash"
 
 [[workflows.workflow]]
 name = "Run Demo"
@@ -31,6 +31,19 @@ args = "pip install litellm==1.57.5"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python gradio_demo.py --reranker jina"
+
+[[workflows.workflow]]
+name = "Run with Gemini Flash"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "pip install litellm==1.57.5"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py --reranker jina --model-name \"openrouter/google/gemini-2.0-flash-001\" --orchestrator-model \"openrouter/google/gemini-2.0-flash-001\""
 
 [[ports]]
 localPort = 7860
