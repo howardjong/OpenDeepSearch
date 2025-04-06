@@ -1,11 +1,17 @@
-from smolagents import CodeAgent, GradioUI, LiteLLMModel
+
+from smolagents import CodeAgent, LiteLLMModel
 from opendeepsearch import OpenDeepSearchTool
 import os
 from dotenv import load_dotenv
 import argparse
+import gradio as gr
+import sys
 
 # Load environment variables
 load_dotenv()
+
+# Print Gradio version for debugging
+print(f"Using Gradio version: {gr.__version__}")
 
 # Ensure API keys are available from Replit Secrets
 api_keys = {
@@ -22,7 +28,7 @@ print("API keys detected in environment:")
 for key, value in api_keys.items():
     print(f"  - {key}: {'✓ Available' if value else '✗ Missing'}")
 
-# Add command line argument parsing
+# Parse command line arguments
 parser = argparse.ArgumentParser(description='Run the Gradio demo with custom models')
 parser.add_argument('--model-name',
                    default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.0-flash-001")),
@@ -61,32 +67,59 @@ if args.search_provider == 'searxng' and not (args.searxng_instance or os.getenv
 if args.openai_base_url:
     os.environ["OPENAI_BASE_URL"] = args.openai_base_url
 
-# Use the command line arguments
-search_tool = OpenDeepSearchTool(
-    model_name=args.model_name,
-    reranker=args.reranker,
-    search_provider=args.search_provider,
-    serper_api_key=args.serper_api_key,
-    searxng_instance_url=args.searxng_instance,
-    searxng_api_key=args.searxng_api_key
-)
-model = LiteLLMModel(
-    model_id=args.orchestrator_model,
-    temperature=0.2,
-)
-
-# Initialize the agent with the search tool
-agent = CodeAgent(tools=[search_tool], model=model)
-
-# Add a name when initializing GradioUI
-# Using 0.0.0.0 to make it accessible in Replit environment
 try:
-    # First try with standard parameters for Gradio 4.x
-    GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
+    # Create the search tool
+    search_tool = OpenDeepSearchTool(
+        model_name=args.model_name,
+        reranker=args.reranker,
+        search_provider=args.search_provider,
+        serper_api_key=args.serper_api_key,
+        searxng_instance_url=args.searxng_instance,
+        searxng_api_key=args.searxng_api_key
+    )
+    
+    # Create the model
+    model = LiteLLMModel(
+        model_id=args.orchestrator_model,
+        temperature=0.2,
+    )
+    
+    # Initialize the agent with the search tool
+    agent = CodeAgent(tools=[search_tool], model=model)
+    
+    # Define a simple Gradio interface directly without using GradioUI from smolagents
+    def process_query(query):
+        try:
+            return agent.run(query)
+        except Exception as e:
+            return f"Error processing query: {str(e)}"
+    
+    # Create a basic Gradio interface
+    with gr.Blocks(title="OpenDeepSearch Demo") as demo:
+        gr.Markdown("# 🔍 OpenDeepSearch Demo")
+        gr.Markdown("Ask any question and get answers powered by AI search")
+        
+        with gr.Row():
+            query_input = gr.Textbox(
+                label="Your Question",
+                placeholder="What is the fastest land animal?",
+                lines=2
+            )
+        
+        submit_btn = gr.Button("Search")
+        
+        output = gr.Textbox(
+            label="Answer",
+            lines=10
+        )
+        
+        submit_btn.click(fn=process_query, inputs=query_input, outputs=output)
+    
+    # Launch the Gradio app
+    demo.launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
+
 except Exception as e:
-    print(f"Error launching with standard parameters: {e}")
-    # Fall back to parameters that might work with other Gradio versions
-    import gradio as gr
-    print(f"Using Gradio version: {gr.__version__}")
-    GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, 
-             share=True, show_error=True)
+    print(f"Fatal error initializing application: {e}", file=sys.stderr)
+    import traceback
+    traceback.print_exc()
+    sys.exit(1)
