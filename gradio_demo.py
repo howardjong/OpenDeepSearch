@@ -5,8 +5,6 @@ from dotenv import load_dotenv
 import argparse
 import gradio as gr
 import sys
-import litellm
-from litellm import Router
 
 # Load environment variables
 load_dotenv()
@@ -32,10 +30,10 @@ for key, value in api_keys.items():
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run the Gradio demo with custom models')
 parser.add_argument('--model-name',
-                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.5-pro-exp-03-25:free")),
+                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openai/gpt-3.5-turbo")),
                    help='Model name for search')
 parser.add_argument('--orchestrator-model',
-                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.5-pro-exp-03-25:free")),
+                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openai/gpt-3.5-turbo")),
                    help='Model name for orchestration')
 parser.add_argument('--reranker',
                    choices=['jina', 'infinity'],
@@ -79,40 +77,7 @@ try:
         searxng_api_key=args.searxng_api_key
     )
 
-    # Create router for load balancing and fallbacks
-    router = Router(
-        model_list=[
-            {
-                "model_name": "openrouter/google/gemini-2.5-pro-exp-03-25:free",
-                "litellm_params": {
-                    "model": "openrouter/google/gemini-2.5-pro-exp-03-25:free",
-                    "temperature": 0.2,
-                },
-                "tpm": 100000,  # Adjust based on OpenRouter free tier limits
-                "rpm": 20       # Adjust based on OpenRouter free tier limits
-            },
-            # Fallback model in case primary model hits rate limits
-            {
-                "model_name": "openrouter/google/gemini-2.0-flash-001",
-                "litellm_params": {
-                    "model": "openrouter/google/gemini-2.0-flash-001",
-                    "temperature": 0.2,
-                },
-                "tpm": 100000,  # Adjust based on OpenRouter limits
-                "rpm": 20       # Adjust based on OpenRouter limits
-            }
-        ],
-        routing_strategy="simple-shuffle",  # Options: "simple-shuffle", "usage-based", "latency-based"
-        num_retries=3,
-        fallbacks=[
-            {"openrouter/google/gemini-2.5-pro-exp-03-25:free": "openrouter/google/gemini-2.0-flash-001"}
-        ]
-    )
-    
-    # Set router as global default
-    litellm.router = router
-    
-    # Create the model using the managed router
+    # Create the model
     model = LiteLLMModel(
         model_id=args.orchestrator_model,
         temperature=0.2,
