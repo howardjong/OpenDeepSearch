@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run with DeepSeek"
+runButton = "Run with Gemini 2.5 Pro Free"
 
 [[workflows.workflow]]
 name = "Run Demo"
@@ -54,6 +54,15 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python gradio_demo.py --reranker jina --model-name \"openrouter/deepseek/deepseek-r1-zero:free\" --orchestrator-model \"openrouter/deepseek/deepseek-r1-zero:free\""
+
+[[workflows.workflow]]
+name = "Run with Gemini 2.5 Pro Free"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py --reranker jina --model-name \"openrouter/google/gemini-2.5-pro-exp-03-25:free\" --orchestrator-model \"openrouter/google/gemini-2.5-pro-exp-03-25:free\""
 
 [[ports]]
 localPort = 7860

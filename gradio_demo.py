@@ -30,10 +30,10 @@ for key, value in api_keys.items():
 # Parse command line arguments
 parser = argparse.ArgumentParser(description='Run the Gradio demo with custom models')
 parser.add_argument('--model-name',
-                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/deepseek/deepseek-r1-zero:free")),
+                   default=os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.5-pro-exp-03-25:free")),
                    help='Model name for search')
 parser.add_argument('--orchestrator-model',
-                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/deepseek/deepseek-r1-zero:free")),
+                   default=os.getenv("LITELLM_ORCHESTRATOR_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.5-pro-exp-03-25:free")),
                    help='Model name for orchestration')
 parser.add_argument('--reranker',
                    choices=['jina', 'infinity'],
