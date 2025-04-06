@@ -65,4 +65,13 @@ agent = CodeAgent(tools=[search_tool], model=model)
 
 # Add a name when initializing GradioUI
 # Using 0.0.0.0 to make it accessible in Replit environment
-GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
+try:
+    # First try with standard parameters for Gradio 4.x
+    GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, share=True)
+except Exception as e:
+    print(f"Error launching with standard parameters: {e}")
+    # Fall back to parameters that might work with other Gradio versions
+    import gradio as gr
+    print(f"Using Gradio version: {gr.__version__}")
+    GradioUI(agent).launch(server_name="0.0.0.0", server_port=args.server_port, 
+             share=True, show_error=True)
