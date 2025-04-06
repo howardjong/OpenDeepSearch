@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run with Claude 3.7 Sonnet (Latest)"
+runButton = "Run with Gemini Flash"
 
 [[workflows.workflow]]
 name = "Run Demo"
