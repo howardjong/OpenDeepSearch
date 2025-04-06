@@ -8,10 +8,19 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run Demo"
+runButton = "Run Simple Demo"
 
 [[workflows.workflow]]
 name = "Run Demo"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python gradio_demo.py --reranker jina"
+
+[[workflows.workflow]]
+name = "Run Simple Demo"
 author = 35006224
 mode = "sequential"
 
