@@ -104,7 +104,6 @@ try:
         ],
         routing_strategy="simple-shuffle",  # Options: "simple-shuffle", "usage-based", "latency-based"
         num_retries=3,
-        retry_after_timeout=5,
         fallbacks=[
             {
                 "original_model": args.orchestrator_model,
