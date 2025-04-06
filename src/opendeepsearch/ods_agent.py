@@ -67,7 +67,9 @@ class OpenDeepSearchAgent:
             source_processor_config['reranker'] = reranker
 
         # Initialize SourceProcessor with provided config or defaults
+        print(f"Creating SourceProcessor with config: {source_processor_config}")
         self.source_processor = SourceProcessor(**source_processor_config)
+        print(f"SourceProcessor initialized successfully")
 
         # Initialize LLM settings
         self.model = model if model is not None else os.getenv("LITELLM_SEARCH_MODEL_ID", os.getenv("LITELLM_MODEL_ID", "openrouter/google/gemini-2.0-flash-001"))

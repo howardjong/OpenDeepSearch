@@ -69,6 +69,7 @@ if args.openai_base_url:
 
 try:
     # Create the search tool
+    print(f"Initializing search tool with reranker: {args.reranker}")
     search_tool = OpenDeepSearchTool(
         model_name=args.model_name,
         reranker=args.reranker,
@@ -77,6 +78,7 @@ try:
         searxng_instance_url=args.searxng_instance,
         searxng_api_key=args.searxng_api_key
     )
+    print(f"Search tool initialized with model {args.model_name} and reranker {args.reranker}")
     
     # Create the model
     model = LiteLLMModel(
