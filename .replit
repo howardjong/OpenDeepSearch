@@ -94,6 +94,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python promptTest.py"
 
+[[workflows.workflow]]
+name = "Test Model Parameters"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python test_llm_models.py --model-key deepseek --temperature 0.3 --max-tokens 2048 --query \"What are the key factors that affect pricing strategies for premium services?\""
+
 [[ports]]
 localPort = 7860
 externalPort = 80
