@@ -145,8 +145,7 @@ try:
             
             data = {
                 "model": "sonar-medium-online",  # More capable model for the main query
-                "messages": [{"role": "user", "content": query}],
-                "max_tokens": args.max_tokens
+                "messages": [{"role": "user", "content": query}]
             }
             
             logger.info(f"Sending request to Perplexity API with parameters: {json.dumps(data, indent=2)}")
