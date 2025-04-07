@@ -55,7 +55,7 @@ try:
     logger.info(f"Running query: {query}")
 
     # Execute the query with configured parameters
-    result = code_agent.run(query, max_tokens=args.max_tokens)
+    result = code_agent.run(query)
 
     logger.info("Query completed successfully")
     print("\n======= RESULT =======")
