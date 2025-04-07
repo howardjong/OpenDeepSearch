@@ -17,9 +17,16 @@ logger.info("Environment variables loaded")
 
 # Check for required API keys
 required_keys = ["SERPER_API_KEY", "OPENROUTER_API_KEY", "JINA_API_KEY"]
+print("Checking API keys:")
 for key in required_keys:
-    if not os.getenv(key):
+    value = os.getenv(key)
+    if not value:
         logger.warning(f"Missing required API key: {key}")
+        print(f"- {key}: MISSING")
+    else:
+        # Only print first 3 and last 3 characters for security
+        masked_value = value[:3] + "***" + value[-3:] if len(value) > 6 else "***"
+        print(f"- {key}: {masked_value}")
 
 try:
     # Using Serper (default)

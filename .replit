@@ -8,7 +8,7 @@ channel = "stable-24_05"
 run = ["sh", "-c", "python gradio_demo.py"]
 
 [workflows]
-runButton = "Run with Gemini Flash"
+runButton = "Run Example"
 
 [[workflows.workflow]]
 name = "Run Demo"
@@ -57,6 +57,15 @@ args = "pip install litellm==1.57.5"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python gradio_demo.py --reranker jina --model-name \"anthropic/claude-3-7-sonnet-20250219\" --orchestrator-model \"anthropic/claude-3-7-sonnet-20250219\""
+
+[[workflows.workflow]]
+name = "Run Example"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python example.py"
 
 [[ports]]
 localPort = 7860
