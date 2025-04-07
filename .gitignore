@@ -76,6 +76,9 @@ instance/
 library_api_response.json
 direct_api_response.json
 
+# Large files
+lid.176.bin
+
 # Sphinx documentation
 docs/_build/
 
