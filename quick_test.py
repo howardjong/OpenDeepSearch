@@ -34,7 +34,7 @@ def main():
         # Use a simpler configuration without code agent
         search_tool = OpenDeepSearchTool(
             model_name="openrouter/google/gemini-2.0-flash-001",
-            pro_mode=False  # Use basic mode to simplify the process
+            reranker="jina"  # Use jina reranker for better results
         )
         
         print("Setting up search tool...")
