@@ -54,6 +54,19 @@ try:
     query = "How long would a cheetah at full speed take to run the length of Pont Alexandre III?"
     logger.info(f"Running query: {query}")
     
+    # Monitor the number of search results
+    original_get_sources = search_agent.search_tool.search_provider.get_sources
+    
+    def get_sources_with_logging(*args, **kwargs):
+        result = original_get_sources(*args, **kwargs)
+        if result and hasattr(result, 'data') and 'organic' in result.data:
+            num_results = len(result.data['organic'])
+            print(f"\n>>> Number of search results received: {num_results} <<<\n")
+        return result
+    
+    # Replace the method temporarily
+    search_agent.search_tool.search_provider.get_sources = get_sources_with_logging
+    
     result = code_agent.run(query)
     
     logger.info("Query completed successfully")
