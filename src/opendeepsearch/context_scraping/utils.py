@@ -1,4 +1,5 @@
 import re
+import os
 from typing import List, Tuple
 import logging
 from opendeepsearch.context_scraping.fasttext_fallback import load_fasttext_or_fallback
