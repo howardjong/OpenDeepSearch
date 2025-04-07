@@ -3,6 +3,7 @@
 FastText fallback module for when the main FastText model fails to load
 """
 import logging
+import os
 import random
 from typing import List, Optional
 
