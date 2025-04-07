@@ -84,6 +84,11 @@ lid.176.bin
 __pycache__/
 .pythonlibs/
 
+# API response files
+serper_response_*.json
+direct_api_response.json
+library_api_response.json
+
 # Sphinx documentation
 docs/_build/
 
