@@ -95,7 +95,7 @@ class SerperAPI(SearchAPI):
     def get_sources(
         self,
         query: str,
-        num_results: int = 8,
+        num_results: int = 50,
         stored_location: Optional[str] = None
     ) -> SearchResult[Dict[str, Any]]:
         """
