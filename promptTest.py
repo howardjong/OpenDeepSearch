@@ -89,7 +89,7 @@ try:
     # Replace the method temporarily
     search_agent.forward = forward_with_pro_mode
     
-    result = code_agent.run(query)
+    result = code_agent.run(query, max_tokens=4096)
     
     logger.info("Query completed successfully")
     print("\n======= RESULT =======")
