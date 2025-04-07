@@ -3,7 +3,12 @@ import torch
 from typing import List, Optional
 from dotenv import load_dotenv
 import os
+import warnings
+import logging
 from .base_reranker import BaseSemanticSearcher
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 class JinaReranker(BaseSemanticSearcher):
     """
