@@ -33,8 +33,7 @@ try:
     logger.info("Initializing OpenDeepSearchTool with Gemini Flash model")
     search_agent = OpenDeepSearchTool(
         model_name="openrouter/google/gemini-2.0-flash-001",
-        reranker="jina",
-        num_results=50  # Specify number of results to fetch from Serper API
+        reranker="jina"
     )
     
     logger.info("Initializing LiteLLMModel")
