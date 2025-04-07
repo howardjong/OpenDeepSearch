@@ -1,2 +1,16 @@
+Objective:
+Analyze price sensitivity for an all-day (9 AM–3 PM) camp in the greater Vancouver area targeting elementary children during spring and summer breaks. This innovative camp, blending arts, STEM, and sports, is led by a PhD scientist, an Olympic gold medalist, and a child psychology expert.
 
-How many all day summer camp providers are there in the greater Vancouver area for elementary school children? Segment the camps by type such as general, arts, STEM, sports, etc. and then give price ranges for each respective camp type.
+Scope and Focus:
+
+Camp Comparison: Evaluate mixed-discipline camps versus general/specialty camps.
+
+Pricing Analysis: Gather data for Van Westendorp and conjoint analyses to identify consumer price thresholds and value perceptions.
+
+Competitive Landscape: Profile key local competitors and their pricing strategies.
+
+Value-Added Services: Identify extra services (e.g., extended care, transportation, specialized learning outcomes) that parents value and are willing to pay a premium for.
+
+Deliverable:
+A concise, data-rich report detailing market trends, competitor insights, and actionable pricing strategies that highlight the camp’s unique value proposition—no sugar-coating, just straight-up insights with a dash of clever humor.
+
