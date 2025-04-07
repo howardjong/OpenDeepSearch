@@ -33,7 +33,8 @@ try:
     logger.info("Initializing OpenDeepSearchTool with Gemini Flash model")
     search_agent = OpenDeepSearchTool(
         model_name="openrouter/google/gemini-2.0-flash-001",
-        reranker="jina"
+        reranker="jina",
+        num_results=50  # Specify number of results to fetch from Serper API
     )
     
     logger.info("Initializing LiteLLMModel")
@@ -44,12 +45,13 @@ try:
     
     # Make sure the search agent is set up
     logger.info("Setting up search agent")
-    if not search_agent.is_initialized:
+    if not hasattr(search_agent, 'is_initialized') or not search_agent.is_initialized:
         search_agent.setup()
     
     logger.info("Creating CodeAgent")
     code_agent = CodeAgent(tools=[search_agent], model=model)
     
+    # Example query for the cheetah speed test
     query = "How long would a cheetah at full speed take to run the length of Pont Alexandre III?"
     logger.info(f"Running query: {query}")
     
