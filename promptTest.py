@@ -53,7 +53,8 @@ try:
     logger.info("Initializing LiteLLMModel")
     model = LiteLLMModel(
         "fireworks_ai/accounts/fireworks/models/deepseek-r1-basic",
-        temperature=0.2
+        temperature=0.2,
+        max_tokens=4096  # Add max_tokens parameter here
     )
     
     # Make sure the search agent is set up
