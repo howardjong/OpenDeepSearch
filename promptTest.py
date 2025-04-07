@@ -43,16 +43,16 @@ try:
         print("Error: prompt.txt file not found")
         sys.exit(1)
     
-    # Using Serper (default)
-    logger.info("Initializing OpenDeepSearchTool with Gemini Flash model")
+    # Using Serper with DeepSeek model on Fireworks AI
+    logger.info("Initializing OpenDeepSearchTool with DeepSeek model")
     search_agent = OpenDeepSearchTool(
-        model_name="openrouter/google/gemini-2.0-flash-001",
+        model_name="fireworks_ai/accounts/fireworks/models/deepseek-r1-basic",
         reranker="jina"
     )
     
     logger.info("Initializing LiteLLMModel")
     model = LiteLLMModel(
-        "openrouter/google/gemini-2.0-flash-001",
+        "fireworks_ai/accounts/fireworks/models/deepseek-r1-basic",
         temperature=0.2
     )
     

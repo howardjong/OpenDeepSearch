@@ -85,6 +85,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python promptTest.py"
 
+[[workflows.workflow]]
+name = "Run Prompt Test with DeepSeek"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python promptTest.py"
+
 [[ports]]
 localPort = 7860
 externalPort = 80
