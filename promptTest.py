@@ -78,6 +78,17 @@ try:
     # Replace the method temporarily
     search_agent.search_tool.serp_search.get_sources = get_sources_with_logging
     
+    # Explicitly use pro mode for deeper search capabilities
+    original_forward = search_agent.forward
+    
+    def forward_with_pro_mode(query):
+        # Make sure we're using pro_mode=True
+        print("\n>>> Using PRO MODE for deep search <<<\n")
+        return original_forward(query)
+    
+    # Replace the method temporarily
+    search_agent.forward = forward_with_pro_mode
+    
     result = code_agent.run(query)
     
     logger.info("Query completed successfully")
