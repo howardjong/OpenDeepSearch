@@ -53,8 +53,7 @@ try:
     logger.info("Initializing LiteLLMModel")
     model = LiteLLMModel(
         "fireworks_ai/accounts/fireworks/models/deepseek-r1-basic",
-        temperature=0.2,
-        max_tokens=4096  # Add max_tokens parameter here
+        temperature=0.2
     )
     
     # Make sure the search agent is set up
@@ -90,7 +89,7 @@ try:
     # Replace the method temporarily
     search_agent.forward = forward_with_pro_mode
     
-    result = code_agent.run(query, max_tokens=4096)
+    result = code_agent.run(query)
     
     logger.info("Query completed successfully")
     print("\n======= RESULT =======")
