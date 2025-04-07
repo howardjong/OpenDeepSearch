@@ -125,6 +125,7 @@ PDM offers several advantages:
 
    - The script will download the FastText model (lid.176.bin, ~125MB) automatically
    - If the download fails, you can manually download it from [Facebook AI's repository](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin)
+   - Note: This large file is ignored by Git and will need to be downloaded on each new environment
 
 2. **Choose a Search Provider**:
    - **Option 1: Serper.dev**: Get **free 2500 credits** and add your API key.

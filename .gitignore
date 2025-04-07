@@ -79,6 +79,11 @@ direct_api_response.json
 # Large files
 lid.176.bin
 
+# Cache directories
+.cache/
+__pycache__/
+.pythonlibs/
+
 # Sphinx documentation
 docs/_build/
 
