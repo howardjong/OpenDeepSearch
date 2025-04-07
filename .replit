@@ -76,6 +76,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python pro_mode_example.py"
 
+[[workflows.workflow]]
+name = "Run Prompt Test"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python promptTest.py"
+
 [[ports]]
 localPort = 7860
 externalPort = 80
