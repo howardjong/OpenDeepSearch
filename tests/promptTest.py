@@ -3,7 +3,8 @@ import os
 import sys
 import logging
 from dotenv import load_dotenv
-from opendeepsearch import OpenDeepSearchAgent, CodeAgent
+from opendeepsearch import OpenDeepSearchAgent
+from smolagents import CodeAgent
 import time
 
 # Configure logging
