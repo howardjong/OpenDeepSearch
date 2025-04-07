@@ -90,6 +90,7 @@ try:
     # Replace the method temporarily
     search_agent.forward = forward_with_pro_mode
     
+    # Run the query without max_tokens parameter
     result = code_agent.run(query)
     
     logger.info("Query completed successfully")
