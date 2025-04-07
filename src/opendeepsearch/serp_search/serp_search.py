@@ -103,7 +103,7 @@ class SerperAPI(SearchAPI):
 
         Args:
             query: Search query string
-            num_results: Number of results to return (default: 24, max: 10)
+            num_results: Number of results to return (default: 8, max: 100)
             stored_location: Optional location string
 
         Returns:
@@ -117,7 +117,7 @@ class SerperAPI(SearchAPI):
 
             payload = {
                 "q": query,
-                "num": min(max(1, num_results), 24),  # Increased from 10 to 24, though SerperAPI may still limit
+                "num": min(max(1, num_results), 100),  # Support up to 100 results as per Serper documentation
                 "gl": search_location
             }
 
