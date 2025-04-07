@@ -1,2 +1,60 @@
-What's the liklihood of the VIX index continuing to go higher the next trading day after closing at a value of 45 the day prior?
+Objective:
+Conduct a comprehensive market research analysis to uncover pricing insights that support a new, innovative all-day mixed-discipline camp. This camp is designed to enhance the development of young children in a fun and safe environment during spring break and summer break. It is spearheaded by a PhD scientist, a former Olympic gold medalist, and a child psychology expert—ensuring a blend of rigorous scientific approach, elite athletic excellence, and deep psychological insights.
 
+Scope:
+
+Camp Definition:
+
+All-Day Camps: Programs lasting at least 6 hours (typically 9 AM–3 PM).
+
+Camp Types:
+
+Mixed-Discipline Camp: A unique model combining multiple disciplines (arts, STEM, and sports) that leverages the expertise of its founders.
+
+Competitor Segments: Include both general camps (offering multiple disciplines) and specialty camps (focused on one discipline such as STEM, sports, or arts).
+
+Research Components:
+
+Price Sensitivity Analysis:
+
+Collect detailed data on current pricing structures in the market.
+
+Identify key price thresholds, ranges, and parental perceptions using Van Westendorp’s methodology.
+
+Explore how the camp’s premium expertise influences perceived value and acceptable price points.
+
+Competitive Landscape:
+
+Identify and profile key competitors in the greater Vancouver area.
+
+Analyze their pricing strategies, service offerings, and market positioning.
+
+Assess how competitors differentiate between general and specialty camps and how that may affect pricing.
+
+Value-Added Services & Unique Selling Propositions:
+
+Determine additional services that parents value (e.g., extended care, transportation, specialized learning outcomes).
+
+Quantify the premium parents are willing to pay for services that align with the camp’s high-caliber leadership and unique educational benefits.
+
+Assess how the expertise of a PhD scientist, an Olympic gold medalist, and a child psychology expert can be translated into tangible benefits for families.
+
+Conjoint Analysis Data:
+
+Gather robust data on various camp attributes (e.g., duration, discipline mix, expert-led sessions, additional features) to support a detailed conjoint analysis.
+
+Focus on attributes that highlight the camp's innovative approach and expert-backed methodology.
+
+Deliverables:
+
+A comprehensive report that includes:
+
+Detailed market trends and consumer behavior insights.
+
+An in-depth competitor analysis with a focus on differentiation through expertise and service offerings.
+
+Quantitative and qualitative data supporting both Van Westendorp price sensitivity and conjoint analyses.
+
+Clear recommendations on pricing strategies and value propositions that reflect the camp’s unique selling points.
+
+Insights presented in a straightforward, engaging manner with a touch of clever humor—because even groundbreaking research can be fun, like decoding the secret sauce behind a championship-winning recipe!
