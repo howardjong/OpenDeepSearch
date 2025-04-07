@@ -103,6 +103,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python test_llm_models.py --model-key deepseek --temperature 0.3 --max-tokens 2048 --query \"What are the key factors that affect pricing strategies for premium services?\""
 
+[[workflows.workflow]]
+name = "Test with Perplexity Direct API"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python test_llm_models.py --model \"perplexity/sonar\" --query \"What is the optimal pricing strategy for a premium children's camp led by experts?\""
+
 [[ports]]
 localPort = 7860
 externalPort = 80

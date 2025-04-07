@@ -26,21 +26,62 @@ args = parser.parse_args()
 logger.info(f"Testing with model: {args.model}")
 
 try:
-    # Initialize the search agent with the specified model
-    logger.info(f"Initializing OpenDeepSearchTool with model {args.model}")
-    search_agent = OpenDeepSearchTool(
-        model_name=args.model,
-        reranker="jina"
-    )
+    # First attempt with the specified model
+    try:
+        # Check if the model is Perplexity Sonar and use direct API
+        if "perplexity/sonar" in args.model:
+            logger.info("Using Perplexity AI directly instead of OpenRouter")
+            direct_model_name = "perplexity/sonar"
+            # Make sure PERPLEXITY_API_KEY is set in your environment variables
+            if not os.getenv("PERPLEXITY_API_KEY"):
+                logger.warning("PERPLEXITY_API_KEY not found in environment variables")
+        else:
+            direct_model_name = args.model
+            
+        # Initialize the search agent with the specified model
+        logger.info(f"Initializing OpenDeepSearchTool with model {direct_model_name}")
+        search_agent = OpenDeepSearchTool(
+            model_name=direct_model_name,
+            reranker="jina"
+        )
 
-    # Initialize the model with configurable parameters
-    logger.info(f"Initializing LiteLLMModel with model {args.model}")
-    model = LiteLLMModel(
-        args.model,
-        temperature=args.temperature,
-        top_p=args.top_p
-    )
-
+        # Initialize the model with configurable parameters
+        logger.info(f"Initializing LiteLLMModel with model {direct_model_name}")
+        model = LiteLLMModel(
+            direct_model_name,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            max_tokens=args.max_tokens
+        )
+        
+        # Test if model works with a minimal query
+        logger.info("Testing model connection...")
+        test_response = model.client.completion(
+            model=direct_model_name,
+            messages=[{"role": "user", "content": "Hello"}],
+            temperature=args.temperature,
+            max_tokens=10
+        )
+        logger.info(f"Successfully connected to model: {direct_model_name}")
+        
+    except Exception as model_error:
+        # Fallback to a different model if the first one fails
+        fallback_model = "fireworks_ai/accounts/fireworks/models/deepseek-r1-basic"
+        logger.warning(f"Error with primary model {args.model}: {str(model_error)}")
+        logger.info(f"Falling back to model: {fallback_model}")
+        
+        search_agent = OpenDeepSearchTool(
+            model_name=fallback_model,
+            reranker="jina"
+        )
+        
+        model = LiteLLMModel(
+            fallback_model,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            max_tokens=args.max_tokens
+        )
+    
     # Set up the search agent
     logger.info("Setting up search agent")
     if not hasattr(search_agent, 'is_initialized') or not search_agent.is_initialized:
@@ -64,6 +105,20 @@ try:
 
 except Exception as e:
     logger.error(f"Error: {str(e)}")
+    
+    # Extract more details from litellm errors
+    if hasattr(e, '__cause__') and e.__cause__:
+        logger.error(f"Cause: {str(e.__cause__)}")
+        
+        # Check for API-specific errors
+        if 'OpenrouterException' in str(e.__cause__):
+            logger.error("OpenRouter API Error detected. This could be due to:")
+            logger.error("- Rate limits or quota exceeded")
+            logger.error("- Invalid model name")
+            logger.error("- Authentication issues")
+        elif 'Perplexity' in str(e.__cause__):
+            logger.error("Perplexity API Error detected. Check your API key and model name.")
+    
     import traceback
     traceback.print_exc()
     sys.exit(1)
