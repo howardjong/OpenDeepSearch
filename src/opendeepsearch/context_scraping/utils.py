@@ -1,7 +1,7 @@
 import re
 from typing import List, Tuple
 import logging
-import wikipediaapi
+from opendeepsearch.context_scraping.fasttext_fallback import load_fasttext_or_fallback
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -13,35 +13,10 @@ def predict_fallback(text, k=1):
     # Return a default prediction that allows the system to continue
     return [['__label__2']], [[1.0]]
 
-# Try to load FastText, but continue if it fails
-try:
-    import fasttext
-    from huggingface_hub import hf_hub_download
-    
-    # Suppress FastText warnings
-    fasttext.FastText.eprint = lambda x: None
-    
-    # Load the model with error handling
-    try:
-        model_path = hf_hub_download("kenhktsui/llm-data-textbook-quality-fasttext-classifer-v2", "model.bin")
-        model = fasttext.load_model(model_path)
-        logger.info("FastText model loaded successfully")
-    except Exception as e:
-        logger.warning(f"Failed to load FastText model: {str(e)}")
-        # Create a mock model with predict function
-        class MockFastTextModel:
-            def predict(self, text, k=1):
-                return predict_fallback(text, k)
-        
-        model = MockFastTextModel()
-except ImportError:
-    logger.warning("FastText module not available, using fallback")
-    # Create a mock model if FastText is not available
-    class MockFastTextModel:
-        def predict(self, text, k=1):
-            return predict_fallback(text, k)
-    
-    model = MockFastTextModel()
+# Load pre-trained model with fallback
+model = load_fasttext_or_fallback("lid.176.bin")
+logging.info("FastText model or fallback loaded successfully")
+
 
 def clean_markdown_links(text: str, min_quality_score: float = 0.2) -> Tuple[str, float]:
     """
@@ -50,14 +25,14 @@ def clean_markdown_links(text: str, min_quality_score: float = 0.2) -> Tuple[str
     """
     # Split by double newlines to preserve paragraph structure
     paragraphs = text.split('\n\n')
-    
+
     cleaned_paragraphs = []
     for paragraph in paragraphs:
         # Preserve code blocks by checking if paragraph contains ``` tags
         if '```' in paragraph:
             cleaned_paragraphs.append(paragraph)
             continue
-            
+
         lines = paragraph.split('\n')
         filtered_lines = []
         for line in lines:
@@ -66,33 +41,33 @@ def clean_markdown_links(text: str, min_quality_score: float = 0.2) -> Tuple[str
             if re.match(r'^#{1,6}\s+', line):
                 filtered_lines.append(line)
                 continue
-            
+
             # Skip common UI/navigation elements
             if re.match(r'^(Share|Trade|More|Buy|Sell|Download|Menu|Home|Back|Next|Previous|\d+\s*(BTC|USD|EUR|GBP)|\w{3}-\w{1,3}|Currency:.*|You (Buy|Spend|Receive)|≈|\d+\.\d+)', line, re.IGNORECASE):
                 continue
-                
+
             # Count words before removing markdown
             word_count = len(re.sub(r'\[.*?\]\(.*?\)|!\[.*?\]\(.*?\)|<.*?>', '', line).split())
-            
+
             # Increase minimum word threshold to 12
             if word_count < 12:
                 # Check if line only contains markdown patterns or appears to be a currency/trading related line
                 cleaned_line = re.sub(r'\[!\[.*?\]\(.*?\)\]\(.*?\)|\[.*?\]\(.*?\)|!\[.*?\]\(.*?\)|<.*?>|\d+(\.\d+)?%?|\$\d+(\.\d+)?', '', line).strip()
                 if not cleaned_line or len(cleaned_line.split()) < 8:  # If nothing substantial remains, skip this line
                     continue
-            
+
             filtered_lines.append(line)
-        
+
         # Only add paragraph if it has any lines left
         if filtered_lines:
             cleaned_paragraphs.append('\n'.join(filtered_lines))
-    
+
     # Rejoin with double newlines
     cleaned_text = '\n\n'.join(cleaned_paragraphs)
-    
+
     # Get quality score
     quality_score = predict_educational_value([cleaned_text])[0]
-    
+
     return cleaned_text, quality_score
 
 def filter_quality_content(text: str, min_quality_score: float = 0.2) -> str:
@@ -101,20 +76,20 @@ def filter_quality_content(text: str, min_quality_score: float = 0.2) -> str:
     """
     # Split text into paragraphs
     paragraphs = text.split('\n\n')
-    
+
     # Process each paragraph
     quality_content = []
     for paragraph in paragraphs:
         if not paragraph.strip():  # Skip empty paragraphs
             continue
-            
+
         cleaned_text, quality_score = clean_markdown_links(paragraph, min_quality_score)
         if cleaned_text and quality_score >= min_quality_score:
             quality_content.append((cleaned_text, quality_score))
-    
+
     # Debug print
     print(f"Found {len(quality_content)} quality paragraphs out of {len(paragraphs)} total")
-    
+
     if quality_content:
         return "\n\n".join(text for text, _ in quality_content)
     return text  # Return original text if no quality content found
@@ -148,15 +123,15 @@ def predict_educational_value(text_list: List[str]) -> List[float]:
 def get_wikipedia_content(url: str) -> str | None:
     """
     Extract content from a Wikipedia URL.
-    
+
     Args:
         url: Wikipedia URL to scrape
-        
+
     Returns:
         str: Page content if found, None otherwise
     """
     wiki = wikipediaapi.Wikipedia(user_agent="opendeepsearch", language='en')
-    
+
     # Extract the page title from URL (everything after /wiki/)
     try:
         title = url.split('/wiki/')[-1]
@@ -211,7 +186,7 @@ def clean_html(html: str, clean_svg: bool = False, clean_base64: bool = False):
         NAV_PATTERN,
         FORM_PATTERN
     ]
-    
+
     for pattern in patterns:
         html = re.sub(pattern, "", html, flags=re.IGNORECASE | re.MULTILINE | re.DOTALL)
 
@@ -219,11 +194,11 @@ def clean_html(html: str, clean_svg: bool = False, clean_base64: bool = False):
         html = replace_svg(html)
     if clean_base64:
         html = replace_base64_images(html)
-        
+
     # Remove empty lines and excessive whitespace
     html = re.sub(r'\n\s*\n', '\n', html)
     html = re.sub(r'\s+', ' ', html)
-    
+
     return html.strip()
 
 JSON_SCHEMA = """
