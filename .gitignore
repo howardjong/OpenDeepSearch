@@ -71,6 +71,11 @@ instance/
 # Scrapy stuff:
 .scrapy
 
+# Test responses:
+*_response_*.json
+library_api_response.json
+direct_api_response.json
+
 # Sphinx documentation
 docs/_build/
 
