@@ -67,6 +67,15 @@ mode = "sequential"
 task = "shell.exec"
 args = "python example.py"
 
+[[workflows.workflow]]
+name = "Run Pro Mode Example"
+author = 35006224
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python pro_mode_example.py"
+
 [[ports]]
 localPort = 7860
 externalPort = 80
