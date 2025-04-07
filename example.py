@@ -55,7 +55,7 @@ try:
     logger.info(f"Running query: {query}")
     
     # Monitor the number of search results
-    original_get_sources = search_agent.search_tool.search_provider.get_sources
+    original_get_sources = search_agent.search_tool.serp_search.get_sources
     
     def get_sources_with_logging(*args, **kwargs):
         result = original_get_sources(*args, **kwargs)
@@ -65,7 +65,7 @@ try:
         return result
     
     # Replace the method temporarily
-    search_agent.search_tool.search_provider.get_sources = get_sources_with_logging
+    search_agent.search_tool.serp_search.get_sources = get_sources_with_logging
     
     result = code_agent.run(query)
     
