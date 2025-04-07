@@ -117,7 +117,7 @@ class SerperAPI(SearchAPI):
 
             payload = {
                 "q": query,
-                "num": min(max(1, num_results), 10),
+                "num": min(max(1, num_results), 24),  # Increased from 10 to 24, though SerperAPI may still limit
                 "gl": search_location
             }
 
