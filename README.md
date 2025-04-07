@@ -115,7 +115,18 @@ PDM offers several advantages:
 
 ## Setup
 
-1. **Choose a Search Provider**:
+1. **Download the FastText Language Identification Model**:
+   - This model is required for content quality assessment and language detection
+   - Run the provided download script:
+
+   ```bash
+   python download_fasttext_model.py
+   ```
+
+   - The script will download the FastText model (lid.176.bin, ~125MB) automatically
+   - If the download fails, you can manually download it from [Facebook AI's repository](https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin)
+
+2. **Choose a Search Provider**:
    - **Option 1: Serper.dev**: Get **free 2500 credits** and add your API key.
      - Visit [serper.dev](https://serper.dev) to create an account.
      - Retrieve your API key and store it as an environment variable:
