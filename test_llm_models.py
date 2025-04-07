@@ -51,7 +51,7 @@ try:
     code_agent = CodeAgent(tools=[search_agent], model=model)
 
     # Test query (use command line argument or default)
-    query = args.query if args.query else "What is the VIX index and why is it important?"
+    query = args.query if args.query else "What is the likelihood that the VIX index will continue to rise the next trading day after closing at a value of 45 the previous day?"
     logger.info(f"Running query: {query}")
 
     # Execute the query with configured parameters
